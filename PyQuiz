@@ -1,0 +1,60 @@
+easy_phrase = "A __1__ C __2__ E __3__ G __4__ I"
+medium_phrase = "1 + 1 = __1__ x 2 = __2__ / 2 = __3__ + 5 = __4__ "
+hard_phrase = "h2o is __1__ o2 is __2__ Ca is __3__ B is __4__"
+sentences = [easy_phrase, medium_phrase, hard_phrase]
+easy_key = ["B", "D", "F", "H"]
+medium_key = ["2", "4", "2", "7"]
+hard_key = ["water", "oxygen", "calcium", "boron"]
+blanks = ["__1__", "__2__", "__3__", "__4__"]
+guesses = [3, 2, 1]
+levels = ["easy", "medium", "hard"]
+answers = [easy_key, medium_key, hard_key]
+
+
+def select_level():
+    """welcomes player to quiz and requires level #selection
+    if incorrect selection has been made, user will be prompted to choose again
+    input = level selection of easy, medium or hard
+    output = returned level and corresponding key with #blanks to fill in
+    """
+    print "Greetings! Choose your level!"
+    while True:
+        level = raw_input("easy? medium? hard? ").lower()
+        if level in levels:
+            return level
+        print("Try again!")
+
+
+def level_controller():
+    """Receives selected level, answer key and number of guesses.
+    updates variables to match user input and calls play_game() method to begin
+    the quiz!
+    """
+    level = select_level()
+    index = levels.index(level)
+    phrase = sentences[index]
+    list_answers = answers[index]
+    attempts = guesses[index]
+    play_game(phrase, list_answers, attempts)
+
+
+def play_game(phrase, list_answers, attempts):
+    """starts level that user selects, updates blank with correct answer if
+    guessed correctly, if incorrect answer is given, 1 attempt is subtracted.
+    inputs = phrases with matching answers and number #of attempts
+    outputs = functioning game with blanks to be filled in and updated reliant
+    on correct answer
+    """
+    index = 0
+    while attempts >= 0 and index < len(list_answers):
+        print(phrase)
+        answer = raw_input("blank __{}__?".format(index + 1))
+        if answer == list_answers[index]:
+            phrase = phrase.replace("__{}__".format(index+1), answer)
+            index += 1
+        else:
+            attempts -= 1
+        if index == len(list_answers):
+            print phrase
+
+level_controller()
